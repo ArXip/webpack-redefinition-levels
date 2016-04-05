@@ -122,6 +122,11 @@ ResolverPlugin.prototype.apply = function( resolver ) {
                 request.path
             )
             
+//            Keep path relative
+            if( newPath[ 0 ] !== '.' ) {
+                newPath = '.' + path.sep + newPath
+            }
+
             if( ResolverPlugin.canResolveModule(
                 path.join( context, newPath ),
                 self.extensions
