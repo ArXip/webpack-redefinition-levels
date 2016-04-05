@@ -90,6 +90,10 @@ ResolverPlugin.prototype.apply = function( resolver ) {
         if( request.path[0] !== '.' || request.module )
             return;
 
+//        Module placed outside the base and levels folders
+        if( !self.pathRegexp.test( context ) )
+            return;
+
 //        Tries to find required component in current project dir
         if( !self.forceRedefinition && ResolverPlugin.canResolveModule( 
             path.join( context, request.path ),
@@ -106,8 +110,11 @@ ResolverPlugin.prototype.apply = function( resolver ) {
             )
 
 //            Ignore when cant conctruct relatibe path to fallback project dir
-            if( !relative )
-                return;
+//            But when forceRedefinition is true and context folder inside base folder,
+//            we'll try to find module by its original path (now request.path === newPath)
+            if( !relative && !self.forceRedefinition ) {
+                return true;
+            }
             
 //            Creates new relative path
             var newPath = path.join(
