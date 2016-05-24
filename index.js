@@ -35,6 +35,7 @@ function RedefinitionLevelsPlugin( base ) {
         } )
     
     this.levels = levels
+    this.baseRegexp = new RegExp( '^' + base.replace( REGEXP_ESCAPE_RANGE, '\\$1' ) )
     
     if( this.forceRedefinition ) {
 //         /^(?:base|level\.1|…)
@@ -46,7 +47,7 @@ function RedefinitionLevelsPlugin( base ) {
             ')'
         )
     } else {
-        this.pathRegexp = new RegExp( '^' + base.replace( REGEXP_ESCAPE_RANGE, '\\$1' ) )
+        this.pathRegexp = this.baseRegexp
     }
 }
 
@@ -91,7 +92,7 @@ ResolverPlugin.prototype.apply = function( resolver ) {
             return;
 
 //        Module placed outside the base and levels folders
-        if( !self.pathRegexp.test( context ) )
+        if( !self.baseRegexp.test( context ) )
             return;
 
 //        Tries to find required component in current project dir
