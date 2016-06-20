@@ -53,7 +53,7 @@ function RedefinitionLevelsPlugin( base ) {
 
 RedefinitionLevelsPlugin.prototype.apply = function( compiler ) {
     assign( this, {
-        extensions: compiler.options.extensions || this.extensions || [ '.js', '.json', '.node' ]
+        extensions: compiler.options.extensions || this.extensions || [ '.jsx', '.js', '.json', '.node' ]
     } )
     
     compiler.resolvers.normal.apply( new ResolverPlugin( this ) )
